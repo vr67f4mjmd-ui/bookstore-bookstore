@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>مكتبة بيون ستور | متجر الكتب</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* ألوان المتجر: الصفحة بيضاء والنص أسود. غيّر لون التمييز من هنا */
+:root{
+  --maroon:#A1005B; --maroon-d:#7A0045; --gold:#F5B21B;
+  --bg:#FFFFFF; --soft:#FAF7F9; --ink:#111111; --muted:#6B6B6B; --line:#E9E9E9;
+  --ribbon:linear-gradient(90deg,#B4531C,#E8A33A);
+  --shadow:0 8px 22px rgba(161,0,91,.16);
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#fff}
+body{font-family:'Cairo','Tajawal',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,textarea,select{font-family:inherit;font-size:1rem;color:var(--ink)}
+:focus-visible{outline:2px solid var(--maroon);outline-offset:2px}
+[hidden]{display:none!important}
+.container{width:min(1180px,92%);margin-inline:auto}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* شريط الإعلان */
+.ticker{background:var(--maroon);color:#fff;overflow:hidden;white-space:nowrap;font-size:.9rem;font-weight:600;padding:.35rem 0}
+.ticker span{display:inline-block;min-width:100%;text-align:center;animation:tick 26s linear infinite}
+@keyframes tick{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+
+/* الرأس */
+.top{background:#fff;border-bottom:1px solid var(--line)}
+.top-in{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;padding:.6rem 0}
+.main-nav{display:flex;gap:1.6rem;font-weight:600}
+.main-nav a:hover{color:var(--maroon)}
+.logo{display:flex;flex-direction:column;align-items:center;line-height:1.1;text-align:center}
+.logo img{width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(161,0,91,.25)}
+.logo b{font-size:.95rem;color:var(--maroon);letter-spacing:.5px}
+.tools{display:flex;align-items:center;gap:.7rem;justify-self:end}
+.login-btn{background:linear-gradient(90deg,var(--maroon),#C77A1E);color:#fff;font-weight:700;padding:.5rem 1.1rem;border-radius:8px;font-size:.9rem}
+.tool{position:relative;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:var(--ink)}
+.tool .ic{width:26px;height:26px}
+.tool.on{color:var(--maroon)}
+.tool.on .ic{fill:var(--maroon)}
+.badge{position:absolute;top:0;inset-inline-end:0;min-width:20px;height:20px;border-radius:10px;background:var(--maroon);color:#fff;font-size:.72rem;font-weight:800;display:grid;place-items:center;padding:0 5px}
+
+/* شريط التصنيفات */
+.catbar{background:var(--maroon)}
+.catbar-in{display:flex;flex-wrap:wrap;justify-content:center;gap:.2rem 1.5rem;padding:.7rem 0}
+.catbar a{color:#fff;font-weight:700;padding:.35rem .1rem;border-bottom:2px solid transparent;white-space:nowrap}
+.catbar a:hover{border-color:var(--gold)}
+.catbar a.active{border-color:var(--gold);color:var(--gold)}
+
+/* البانر */
+.banner{display:grid;margin-top:2rem;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);position:relative;background:#5C2040}
+.slide{grid-area:1/1;opacity:0;pointer-events:none;transition:opacity .6s;padding:2rem 1.2rem 2.6rem;text-align:center;color:#fff}
+.slide.on{opacity:1;pointer-events:auto}
+.slide h2{font-size:clamp(1.6rem,5vw,3rem);font-weight:800;margin-bottom:1.2rem}
+.slide h2 em{font-style:normal;color:var(--gold)}
+.mosaic{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;max-width:760px;margin:0 auto 1.2rem}
+.mosaic .m{aspect-ratio:2/3;border-radius:4px;overflow:hidden;background:#7a3158;cursor:pointer}
+.mosaic img{width:100%;height:100%;object-fit:cover}
+.gold-btn{display:inline-block;background:var(--gold);color:#4a1030;font-weight:800;padding:.7rem 2rem;border-radius:999px;box-shadow:0 4px 0 #c88c0c}
+.slide-2{background:linear-gradient(135deg,var(--maroon),var(--maroon-d));display:flex;flex-direction:column;align-items:center;justify-content:center}
+.slide-2 p{max-width:42ch;margin-bottom:1.2rem;opacity:.95}
+.dots{position:absolute;bottom:.8rem;left:0;right:0;display:flex;justify-content:center;gap:.5rem}
+.dots button{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.45)}
+.dots button.on{background:var(--gold)}
+
+/* البحث */
+.searchbar{display:flex;align-items:center;gap:.6rem;margin:2.2rem 0 0;padding:.5rem .6rem;background:#fff;border:2.5px solid var(--gold);border-radius:999px;box-shadow:0 0 14px rgba(245,178,27,.3)}
+.searchbar input{flex:1;border:0;outline:0;background:transparent;padding:.4rem .5rem}
+.sbtn{width:44px;height:40px;border-radius:8px;background:var(--maroon);color:#fff;display:grid;place-items:center}
+.sicon{color:var(--ink);display:grid;place-items:center;padding-inline:.4rem}
+.sicon .ic{width:26px;height:26px}
+
+/* العناوين */
+.sec{padding-top:3rem}
+.sec-head{position:relative;margin-bottom:1.6rem}
+.sec-title{display:flex;align-items:center;justify-content:center;gap:1rem;font-size:1.7rem;font-weight:800;color:var(--maroon)}
+.sec-title::before,.sec-title::after{content:"";width:clamp(36px,9vw,110px);height:10px;background:linear-gradient(90deg,var(--maroon),var(--gold)) top/100% 3px no-repeat,linear-gradient(90deg,var(--maroon),var(--gold)) bottom/100% 3px no-repeat}
+.sec-more{position:absolute;inset-inline-end:0;top:50%;transform:translateY(-50%);color:var(--maroon);font-weight:700}
+
+/* الدوائر والمسارات */
+.track{display:flex;gap:1.4rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:.4rem .2rem 1rem}
+.track::-webkit-scrollbar{display:none}
+.cat-item{flex:0 0 130px;display:flex;flex-direction:column;align-items:center;gap:.7rem;scroll-snap-align:start;font-weight:800;font-size:1.05rem;text-align:center}
+.cat-circle{width:118px;height:118px;border-radius:50%;background:var(--maroon);display:grid;place-items:center;font-size:3rem;box-shadow:0 8px 14px rgba(161,0,91,.28);border:3px solid transparent;transition:transform .2s}
+.cat-circle span{filter:grayscale(1) sepia(1) saturate(7) brightness(1.15)}
+.cat-circle .txt{filter:none;color:var(--gold);font-weight:800;font-size:2.4rem}
+.cat-item:hover .cat-circle{transform:translateY(-4px)}
+.cat-item.active .cat-circle{border-color:var(--gold)}
+.cat-item.active .cat-name{color:var(--maroon)}
+.arrows{display:flex;justify-content:center;gap:1rem;margin-top:1rem;direction:ltr}
+.arrows button{width:46px;height:40px;border-radius:8px;background:var(--maroon);color:#fff;display:grid;place-items:center;font-size:1.3rem;font-weight:800}
+.arrows button:last-child{background:#E7C3D6;color:#fff}
+.arrows button:hover{background:var(--maroon-d)}
+.track .pcard{flex:0 0 min(230px,62%);scroll-snap-align:start}
+
+/* بطاقات الكتب */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.6rem}
+.pcard{display:flex;flex-direction:column;gap:.45rem}
+.pcover{position:relative;aspect-ratio:2/3;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;background:var(--soft)}
+.pcover img{width:100%;height:100%;object-fit:cover;display:block}
+.price-tag{position:absolute;top:.9rem;right:0;background:var(--ribbon);color:#fff;font-weight:800;padding:.25rem 1rem .25rem 1.3rem;clip-path:polygon(16px 0,100% 0,100% 100%,16px 100%,0 50%);padding-inline-start:1.5rem;direction:ltr}
+.new-tag{position:absolute;top:0;inset-inline-end:0;background:var(--maroon);color:#fff;font-size:.8rem;font-weight:700;padding:.2rem 1rem;border-radius:0 0 0 14px}
+.pacts{position:absolute;bottom:.7rem;left:0;right:0;display:flex;justify-content:center;gap:.5rem}
+.pacts button{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--maroon);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.25);transition:transform .15s}
+.pacts button:hover{transform:scale(1.1);background:var(--maroon);color:#fff}
+.pacts .fav.on{color:var(--maroon)}
+.pacts .fav.on .ic{fill:var(--maroon)}
+.pacts .fav.on:hover .ic{fill:#fff}
+.dot{display:block;width:9px;height:9px;border-radius:50%;background:var(--maroon);margin:.3rem auto 0}
+.ptitle,.pauthor{display:flex;align-items:flex-start;gap:.5rem;line-height:1.4}
+.ptitle{font-weight:700}
+.ptitle .ic,.pauthor .ic{color:#C95A98;width:18px;height:18px;margin-top:.2rem}
+.empty{text-align:center;color:var(--muted);padding:3rem 0}
+.admin-bar{margin-top:1.6rem;text-align:center}
+.authors-box{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center}
+.author-chip{border:1.5px solid var(--maroon);color:var(--maroon);padding:.4rem 1.1rem;border-radius:999px;font-weight:700}
+.author-chip:hover{background:var(--maroon);color:#fff}
+.more-wrap{text-align:center;margin-top:1.8rem}
+
+/* أزرار عامة */
+.btn{display:inline-block;padding:.7rem 1.7rem;border-radius:10px;font-weight:800;border:2px solid var(--maroon);transition:transform .15s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--maroon);color:#fff}
+.btn-primary:hover{background:var(--maroon-d);border-color:var(--maroon-d)}
+.btn-ghost{background:#fff;color:var(--maroon)}
+.btn-ghost:hover{background:var(--soft)}
+.btn.full{width:100%;text-align:center}
+
+/* صفحة السلة */
+.page-title{text-align:center;font-size:2.4rem;font-weight:800;margin:2rem 0 .5rem}
+.stepper{display:flex;justify-content:center;align-items:flex-start;margin:1.2rem 0 2rem}
+.stp{display:flex;flex-direction:column;align-items:center;gap:.5rem;width:110px;font-size:.9rem;font-weight:600}
+.stp b{width:56px;height:56px;border-radius:50%;background:#B8BCC8;color:#fff;display:grid;place-items:center;font-size:1.4rem}
+.stp.on b{background:#FFD400;color:#111}
+.stp.done b{background:var(--maroon)}
+.stp-line{width:70px;height:3px;background:#B8BCC8;margin-top:27px}
+.cart-card{background:#fff;border-radius:16px;box-shadow:0 4px 26px rgba(0,0,0,.09);padding:1.4rem;margin-bottom:3rem}
+.crow{display:grid;grid-template-columns:90px 1fr 110px 140px 130px 48px;gap:1rem;align-items:center;padding:.9rem .5rem;border-bottom:1px solid var(--line)}
+.chead{background:#F3F4F6;border-radius:8px;font-size:.85rem;color:var(--muted);border:0}
+.crow img{width:70px;aspect-ratio:2/3;object-fit:cover;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.c-title{font-weight:700}
+.qtybox{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.qtybox button{width:36px;height:38px;font-size:1.2rem;font-weight:700;background:#F3F4F6}
+.qtybox b{min-width:42px;text-align:center}
+.c-del{width:38px;height:38px;border-radius:8px;border:1px solid #F4B9B4;color:#D14B42;background:#FFF5F4;display:grid;place-items:center}
+.cart-foot{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding-top:1.4rem}
+.cart-total{font-size:1.4rem;font-weight:800}
+.btns{display:flex;gap:.8rem;flex-wrap:wrap}
+.form-box{max-width:520px;margin:0 auto}
+.form-box label{display:block;font-weight:700;margin-bottom:.9rem}
+.form-box input[type=text],.form-box input[type=tel],.form-box input[type=number],.form-box input[type=password],.form-box input[type=file],.form-box textarea,.form-box select{display:block;width:100%;margin-top:.25rem;padding:.65rem .85rem;border:1.5px solid var(--line);border-radius:10px;background:var(--soft)}
+.form-box fieldset{border:1.5px solid var(--line);border-radius:10px;padding:.6rem .9rem;margin-bottom:1rem}
+.form-box legend{font-weight:800;padding:0 .4rem}
+.form-box .radio{display:flex;align-items:center;gap:.5rem;font-weight:400;margin:.3rem 0}
+.rv-row{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--line)}
+.rv-total{display:flex;justify-content:space-between;font-size:1.2rem;font-weight:800;padding:.8rem 0}
+.form-error{color:#B3261E;font-weight:700;margin-bottom:.8rem}
+.success{text-align:center;padding:2rem 0 3rem}
+.success .check{width:80px;height:80px;margin:0 auto 1rem;border-radius:50%;background:var(--maroon);color:#fff;font-size:2.4rem;display:grid;place-items:center}
+.success p{color:var(--muted);margin:.6rem auto 1.4rem;max-width:44ch}
+
+/* النوافذ */
+.overlay{position:fixed;inset:0;background:rgba(30,0,20,.55);z-index:40}
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:1rem;overflow-y:auto}
+.modal-box{position:relative;background:#fff;border-radius:16px;padding:1.6rem;width:min(760px,100%);max-height:92vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.3);animation:pop .25s}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}}
+.close{position:absolute;top:.8rem;inset-inline-start:.8rem;width:36px;height:36px;border-radius:50%;background:var(--soft);border:1px solid var(--line);z-index:2}
+.book-modal{display:grid;grid-template-columns:220px 1fr;gap:1.6rem}
+.m-cover{aspect-ratio:2/3;border-radius:10px;overflow:hidden;box-shadow:var(--shadow);background:var(--soft)}
+.m-cover img{width:100%;height:100%;object-fit:cover}
+.m-cat{color:var(--maroon);font-weight:700;font-size:.9rem}
+.m-info h3{font-size:1.7rem;line-height:1.3}
+.m-author{color:var(--muted);margin-bottom:.8rem}
+.m-meta{list-style:none;margin-bottom:1rem}
+.m-meta li{display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--line)}
+.m-meta span{color:var(--muted)}
+.m-buy{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.m-price{font-weight:800;font-size:1.5rem}
+.m-btns{display:flex;gap:.6rem}
+.m-fav{width:46px;height:46px;border-radius:10px;border:2px solid var(--maroon);color:var(--maroon);display:grid;place-items:center}
+.m-fav.on .ic{fill:var(--maroon)}
+.checkout-box{width:min(480px,100%)}
+.checkout-box h3{font-size:1.5rem;margin-bottom:1rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.preview{width:90px;aspect-ratio:2/3;border-radius:6px;overflow:hidden;margin-bottom:.8rem;background:var(--soft)}
+.preview img{width:100%;height:100%;object-fit:cover}
+
+/* المخزون والنبذة */
+.pcover.sold img{filter:grayscale(.7) brightness(.85)}
+.sold-tag{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) rotate(-8deg);background:rgba(17,17,17,.9);color:#fff;font-weight:800;padding:.4rem 1.2rem;border-radius:8px;white-space:nowrap;border:2px solid #fff;pointer-events:none;z-index:2}
+.pacts button[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.pacts button[disabled]:hover{background:#fff;color:var(--maroon)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.qtybox button[disabled]{opacity:.4;cursor:not-allowed}
+.m-desc-title{font-weight:800;color:var(--maroon);margin-top:.4rem}
+.m-desc{white-space:pre-line;color:#333;margin-bottom:.8rem;max-height:9rem;overflow-y:auto}
+.m-stock{font-weight:700;margin-bottom:.8rem;color:#1B7F3B}
+.m-stock.low{color:#B45309}
+.m-stock.out{color:#B3261E}
+
+/* التذييل وأدوات */
+.footer{background:var(--maroon);color:#fff;text-align:center;padding:2rem 0;margin-top:1rem}
+.footer p{max-width:60ch;margin:0 auto .5rem;opacity:.95}
+.footer a{text-decoration:underline;font-weight:700}
+.wa-btn{position:fixed;bottom:1.2rem;inset-inline-end:1.2rem;z-index:35;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;font-size:1.7rem;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.toast{position:fixed;bottom:1.4rem;left:50%;transform:translate(-50%,120px);background:#111;color:#fff;padding:.6rem 1.2rem;border-radius:8px;z-index:60;transition:transform .3s;font-weight:600}
+.toast.show{transform:translate(-50%,0)}
+
+@media (max-width:860px){
+  .top-in{grid-template-columns:auto 1fr;grid-template-areas:"logo tools" "nav nav"}
+  .logo{grid-area:logo;align-items:flex-start}
+  .tools{grid-area:tools}
+  .main-nav{grid-area:nav;justify-content:center;font-size:.95rem;gap:1.1rem}
+  .catbar-in{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}
+  .catbar-in::-webkit-scrollbar{display:none}
+}
+@media (max-width:700px){
+  .crow{grid-template-columns:70px 1fr auto;grid-template-areas:"img title del" "img price price" "qty qty total";gap:.5rem .8rem}
+  .chead{display:none}
+  .c-img{grid-area:img}.c-title{grid-area:title}.c-price{grid-area:price;color:var(--muted)}.c-qty{grid-area:qty}.c-total{grid-area:total;text-align:end;font-weight:800}.c-del{grid-area:del}
+  .stp{width:80px;font-size:.8rem}.stp b{width:44px;height:44px;font-size:1.1rem}.stp-line{width:34px;margin-top:21px}
+  .page-title{font-size:1.9rem}
+}
+@media (max-width:600px){
+  .pgrid{grid-template-columns:repeat(2,1fr);gap:1rem}
+  .sec-title{font-size:1.35rem}
+  .sec-more{position:static;transform:none;display:block;text-align:center;margin-top:.4rem}
+  .cat-item{flex-basis:96px;font-size:.9rem}.cat-circle{width:84px;height:84px;font-size:2.2rem}
+  .book-modal{grid-template-columns:1fr}.m-cover{width:160px;margin:0 auto}
+  .login-btn{padding:.4rem .7rem;font-size:.8rem}
+  .mosaic{grid-template-columns:repeat(4,1fr);gap:.4rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8-4.8-8-11A4.5 4.5 0 0112 7a4.5 4.5 0 018 2.5c0 6.2-8 11-8 11z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.2l2 10h10.3l2-7.5H6.2"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4h12a2 2 0 012 2v14H7a2 2 0 01-2-2V4z"/><path d="M5 18a2 2 0 012-2h12"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M20 4C11 4 6 9 6 16l-2 4M6 16h6c4 0 7-3 8-12"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8-8-2z"/></symbol>
+</svg>
+
+<div class="ticker" aria-label="إعلان"><span id="tickerText"></span></div>
+
+<header class="top">
+  <div class="container top-in">
+    <nav class="main-nav" aria-label="القائمة الرئيسية">
+      <a href="#" data-go="home">الصفحة الرئيسية</a>
+      <a href="#" data-go="all">الكتب</a>
+      <a href="#footer" data-go="about">من نحن</a>
+      <a href="#" id="contactLink" target="_blank" rel="noopener">اتصل بنا</a>
+    </nav>
+    <a href="#" class="logo" data-go="home" aria-label="الصفحة الرئيسية">
+      <img src="/logo.png" alt="شعار مكتبة بيون ستور" width="64" height="64">
+      <b id="logoText">مكتبة بيون ستور</b>
+    </a>
+    <div class="tools">
+      <button class="tool" id="favBtn" aria-label="المفضلة"><svg class="ic"><use href="#i-heart"/></svg><span class="badge" id="favCount">0</span></button>
+      <button class="tool" id="cartBtn" aria-label="سلة المشتريات"><svg class="ic"><use href="#i-cart"/></svg><span class="badge" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+<nav class="catbar" aria-label="التصنيفات"><div class="container catbar-in" id="catBar"></div></nav>
+
+<!-- ===== المتجر ===== -->
+<main id="shopView">
+  <div class="container">
+    <div class="banner" id="banner">
+      <div class="slide on" id="sl1"></div>
+      <div class="slide slide-2" id="sl2">
+        <h2>اطلب كتبك <em>بسهولة</em></h2>
+        <p>اختر الكتب، أضفها إلى السلة، وادفع عند الاستلام. وإن احتجت مساعدة تواصل معنا على واتساب.</p>
+        <a class="gold-btn" id="slWa" href="#" target="_blank" rel="noopener">تواصل عبر واتساب</a>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <form class="searchbar" id="searchForm" role="search">
+      <button class="sbtn" type="submit" aria-label="بحث"><svg class="ic"><use href="#i-send"/></svg></button>
+      <input id="searchInput" type="search" placeholder="البحث" aria-label="البحث عن كتاب أو مؤلف" autocomplete="off">
+      <span class="sicon"><svg class="ic"><use href="#i-search"/></svg></span>
+    </form>
+      </div>
+
+  <section class="container sec" id="catsSec">
+    <div class="sec-head"><h2 class="sec-title">الأقسام</h2></div>
+    <div class="track" id="catTrack"></div>
+    <div class="arrows"><button data-scroll="catTrack" data-dir="-1" aria-label="السابق">←</button><button data-scroll="catTrack" data-dir="1" aria-label="التالي">→</button></div>
+  </section>
+
+  <section class="container sec" id="bestSec" hidden>
+    <div class="sec-head"><h2 class="sec-title">الأكثر مبيعاً</h2><a href="#" class="sec-more" data-go="best">عرض الكل</a></div>
+    <div class="track" id="bestTrack"></div>
+    <div class="arrows"><button data-scroll="bestTrack" data-dir="-1" aria-label="السابق">←</button><button data-scroll="bestTrack" data-dir="1" aria-label="التالي">→</button></div>
+  </section>
+
+  <section class="container sec" id="newSec" hidden>
+    <div class="sec-head"><h2 class="sec-title">وصل حديثاً</h2><a href="#" class="sec-more" data-go="all">عرض المزيد</a></div>
+    <div class="pgrid" id="newGrid"></div>
+  </section>
+
+  <section class="container sec" id="resultsSec" hidden>
+    <div class="sec-head"><h2 class="sec-title" id="resTitle">جميع الكتب</h2></div>
+    <div class="authors-box" id="authorsBox" hidden></div>
+    <div class="pgrid" id="resGrid"></div>
+    <p class="empty" id="emptyMsg" hidden></p>
+  </section>
+  <div style="height:3rem"></div>
+</main>
+
+<!-- ===== السلة ===== -->
+<main id="cartView" hidden>
+  <div class="container">
+    <h1 class="page-title">السلة</h1>
+    <div class="stepper" id="stepper" aria-label="خطوات الطلب"></div>
+
+    <div class="cart-card" id="cs1">
+      <div id="cartRows"></div>
+      <div class="cart-foot">
+        <div class="cart-total">المجموع: <span id="cartTotal">0</span></div>
+        <div class="btns">
+          <button class="btn btn-ghost" id="keepShopping">متابعة التسوق</button>
+          <button class="btn btn-primary" id="toStep2">إتمام الطلب ←</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-card" id="cs2" hidden>
+      <form class="form-box" id="orderForm" novalidate>
+        <div id="reviewBox"></div>
+        <label>الاسم الكامل<input name="name" type="text" required autocomplete="name"></label>
+        <label>رقم الهاتف<input name="phone" type="tel" required autocomplete="tel" inputmode="tel"></label>
+        <label>العنوان<textarea name="address" rows="2" required></textarea></label>
+        <fieldset>
+          <legend>طريقة الطلب</legend>
+          <label class="radio"><input type="radio" name="pay" value="cod" checked> الدفع عند الاستلام</label>
+          <label class="radio"><input type="radio" name="pay" value="whatsapp"> إرسال الطلب عبر واتساب</label>
+        </fieldset>
+        <p class="form-error" id="formError" role="alert" hidden></p>
+        <div class="btns">
+          <button class="btn btn-primary" type="submit">تأكيد الطلب</button>
+          <button class="btn btn-ghost" type="button" id="backStep1">رجوع</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="cart-card success" id="cs3" hidden>
+      <div class="check">✓</div>
+      <h2>تم استلام طلبك</h2>
+      <p id="doneMsg"></p>
+      <a class="btn btn-ghost" id="waOrder" href="#" target="_blank" rel="noopener" hidden style="margin:.3rem">فتح واتساب لإرسال الطلب</a>
+      <button class="btn btn-primary" id="backShop">العودة للمتجر</button>
+    </div>
+  </div>
+</main>
+
+<footer class="footer" id="footer">
+  <div class="container">
+    <p id="aboutText"></p>
+    <p><a id="footWa" href="#" target="_blank" rel="noopener">تواصل معنا عبر واتساب</a></p>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay" hidden></div>
+
+<!-- تفاصيل الكتاب -->
+<div class="modal" id="bookModal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+  <div class="modal-box book-modal">
+    <button class="close" data-close aria-label="إغلاق">✕</button>
+    <div class="m-cover" id="mCover"></div>
+    <div class="m-info">
+      <p class="m-cat" id="mCat"></p>
+      <h3 id="mTitle"></h3>
+      <p class="m-author" id="mAuthor"></p>
+      <ul class="m-meta">
+        <li><span>الفئة</span><b id="mCat2"></b></li>
+        <li><span>عدد الصفحات</span><b id="mPages"></b></li>
+        <li><span>السعر</span><b id="mPriceRow"></b></li>
+      </ul>
+      <h4 class="m-desc-title" id="mDescTitle" hidden>نبذة عن الكتاب</h4>
+      <p class="m-desc" id="mDesc" hidden></p>
+      <p class="m-stock" id="mStock"></p>
+      <div class="m-buy">
+        <span class="m-price" id="mPrice"></span>
+        <div class="m-btns">
+          <button class="m-fav" id="mFav" aria-label="المفضلة"><svg class="ic"><use href="#i-heart"/></svg></button>
+          <button class="btn btn-primary" id="mAdd">أضف إلى السلة</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a class="wa-btn" id="waBtn" href="#" target="_blank" rel="noopener" aria-label="تواصل معنا عبر واتساب">💬</a>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ========== إعدادات المتجر (عدّلها هنا) ========== */
+let CONFIG = { storeName: 'المتجر', whatsapp: '', currency: '₪', announcement: '', about: '' };
+let loadFailed = false;
+
+/* ========== الأقسام (نفس أقسام الموقع المرجعي) ========== */
+const CATS = ['روايات', 'كتب دينية', 'علم نفس', 'تنمية بشرية', 'English Books', 'علوم', 'فلسفة', 'دراسات ادبية', 'نصوص',
+  'علم اجتماع', 'تفاعلي', 'اقتصاد', 'ادب الرسائل', 'سيرة ذاتية', 'تاريخ', 'فكر معاصر', 'اطفال', 'دراسات', 'سياسة',
+  'ميثولوجيا', 'تربية وأسرة', 'شعر', 'ادب سجون', 'قصص قصيرة', 'أدب مسرحي', 'مذكرات', 'إكسسوارات'];
+const ALL = 'جميع الكتب', AUTHORS = 'المؤلفون';
+const NAV = [ALL, ...CATS, AUTHORS];
+const ICON = { 'جميع الكتب': '📚', 'روايات': '📖', 'كتب دينية': '🕌', 'علم نفس': '🧠', 'تنمية بشرية': '💡', 'English Books': 'Aa',
+  'علوم': '⚛️', 'فلسفة': '🤔', 'دراسات ادبية': '🎓', 'نصوص': '📜', 'علم اجتماع': '👥', 'تفاعلي': '✍️', 'اقتصاد': '📈',
+  'ادب الرسائل': '✉️', 'سيرة ذاتية': '🪪', 'تاريخ': '🏛️', 'فكر معاصر': '🧩', 'اطفال': '🧒', 'دراسات': '🔍', 'سياسة': '♟️',
+  'ميثولوجيا': '🔱', 'تربية وأسرة': '👪', 'شعر': '🪶', 'ادب سجون': '⛓️', 'قصص قصيرة': '✨', 'أدب مسرحي': '🎭',
+  'مذكرات': '📔', 'إكسسوارات': '🔖', 'المؤلفون': '✒️' };
+
+/* ========== أدوات ========== */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = n => CONFIG.currency + ' ' + (+n).toFixed(2);
+const ic = n => `<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } };
+const save = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+
+let books = [], favs = load('shop_favs', []), cart = load('shop_cart', []);
+let filter = 'الكل', query = '', showAll = false, view = 'shop', step = 1, openBookId = null, pendingImg = null;
+const isAdmin = false;
+const byId = id => books.find(b => b.id === id);
+const imgTag = b => `<img src="${b.img}" alt="غلاف ${esc(b.title)}" loading="lazy">`;
+const waLink = () => 'https://wa.me/' + CONFIG.whatsapp;
+
+/* ========== بطاقة كتاب ========== */
+function pcard(b, isNew) {
+  const fav = favs.includes(b.id);
+  const out = !(b.stock > 0);
+  return `<article class="pcard">
+    <div class="pcover ${out ? 'sold' : ''}" data-view="${b.id}">${imgTag(b)}
+      <span class="price-tag">${fmt(b.price)}</span>${isNew ? '<span class="new-tag">جديد</span>' : ''}${out ? '<span class="sold-tag">نفذت الكمية</span>' : ''}
+      <div class="pacts">
+        <button data-add="${b.id}" ${out ? 'disabled' : ''} aria-label="${out ? 'نفذت الكمية' : 'أضف ' + esc(b.title) + ' إلى السلة'}">${ic('cart')}</button>
+        <button data-view="${b.id}" aria-label="تفاصيل ${esc(b.title)}">${ic('eye')}</button>
+        <button class="fav ${fav ? 'on' : ''}" data-fav="${b.id}" aria-label="المفضلة">${ic('heart')}</button>
+      </div>
+    </div>
+    <i class="dot"></i>
+    <div class="ptitle">${ic('book')}<span>${esc(b.title)}</span></div>
+    <div class="pauthor">${ic('pen')}<span>${esc(b.author)}</span></div>
+  </article>`;
+}
+
+/* ========== العرض ========== */
+function visibleBooks() {
+  const q = query.trim().toLowerCase();
+  return books.filter(b => {
+    const okF = filter === 'الكل' || (filter === 'best' ? b.best : filter === 'fav' ? favs.includes(b.id) : b.cat === filter);
+    const okQ = !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q);
+    return okF && okQ;
+  }).reverse();
+}
+
+function isActive(c) {
+  if (c === ALL) return filter === 'الكل' && showAll;
+  if (c === AUTHORS) return filter === 'authors';
+  return filter === c;
+}
+
+function renderNav() {
+  $('#catBar').innerHTML = NAV.map(c => `<a href="#" data-cat="${esc(c)}" class="${isActive(c) ? 'active' : ''}">${esc(c)}</a>`).join('');
+  $('#catTrack').innerHTML = NAV.map(c => {
+    const i = ICON[c];
+    return `<a href="#" class="cat-item ${isActive(c) ? 'active' : ''}" data-cat="${esc(c)}"><span class="cat-circle">${i === 'Aa' ? '<span class="txt">Aa</span>' : `<span>${i}</span>`}</span><span class="cat-name">${esc(c)}</span></a>`;
+  }).join('');
+}
+
+function renderBanner() {
+  const latest = [...books].reverse().slice(0, 8);
+  $('#sl1').innerHTML = `<h2>أحدث <em>الإصدارات</em> في مكتبتنا</h2>` +
+    (latest.length
+      ? `<div class="mosaic">${latest.map(b => `<div class="m" data-view="${b.id}">${imgTag(b)}</div>`).join('')}</div><a class="gold-btn" href="#" data-go="all">اضغط هنا واكتشف المزيد</a>`
+      : `<p style="opacity:.9;margin-bottom:1rem">ستظهر هنا أحدث الكتب بعد إضافتها.</p>`);
+}
+
+function render() {
+  const q = query.trim();
+  const home = filter === 'الكل' && !q && !showAll;
+  renderNav();
+  const best = books.filter(b => b.best).reverse();
+  $('#bestSec').hidden = !(home && best.length);
+  $('#bestTrack').innerHTML = best.map(b => pcard(b, false)).join('');
+  $('#newSec').hidden = !(home && books.length);
+  $('#newGrid').innerHTML = [...books].reverse().slice(0, 8).map(b => pcard(b, true)).join('');
+  $('#resultsSec').hidden = home && books.length > 0;
+  const authorsMode = filter === 'authors' && !q;
+  $('#authorsBox').hidden = !authorsMode;
+  $('#resGrid').hidden = authorsMode;
+  if (authorsMode) {
+    const names = [...new Set(books.map(b => b.author))];
+    $('#authorsBox').innerHTML = names.length ? names.map(n => `<button class="author-chip" data-author="${esc(n)}">${esc(n)}</button>`).join('') : '<p class="empty">لا يوجد مؤلفون بعد.</p>';
+  }
+  const list = visibleBooks();
+  $('#resGrid').innerHTML = authorsMode ? '' : list.map(b => pcard(b, false)).join('');
+  const empty = $('#emptyMsg');
+  empty.hidden = authorsMode || list.length > 0;
+  if (!list.length) {
+    empty.textContent = !books.length ? (loadFailed ? 'تعذّر تحميل الكتب. حدّث الصفحة بعد قليل.' : 'لا توجد كتب حالياً. عد قريباً.')
+      : filter === 'fav' ? 'لم تضف أي كتاب إلى المفضلة بعد.' : 'لا توجد كتب مطابقة. جرّب كلمة بحث أخرى أو اختر قسماً آخر.';
+  }
+  $('#resTitle').textContent = q ? 'نتائج البحث' : filter === 'best' ? 'الأكثر مبيعاً' : filter === 'fav' ? 'المفضلة'
+    : filter === 'authors' ? AUTHORS : filter === 'الكل' ? ALL : filter;
+  $('#favBtn').classList.toggle('on', filter === 'fav');
+  renderBanner();
+  renderBadges();
+}
+
+function renderBadges() {
+  $('#cartCount').textContent = cart.reduce((s, i) => s + i.qty, 0);
+  $('#favCount').textContent = favs.length;
+}
+
+/* ========== التنقل ========== */
+function showView(v) {
+  view = v;
+  $('#shopView').hidden = v !== 'shop';
+  $('#cartView').hidden = v !== 'cart';
+  scrollTo({ top: 0 });
+}
+function goResults() { showView('shop'); const t = $('#resultsSec').hidden ? $('#catsSec') : $('#resultsSec'); t.scrollIntoView(); }
+
+function setCat(c) {
+  query = ''; $('#searchInput').value = '';
+  if (c === ALL) { filter = 'الكل'; showAll = true; }
+  else if (c === AUTHORS) { filter = 'authors'; showAll = true; }
+  else { filter = c; showAll = true; }
+  showView('shop'); render(); $('#resultsSec').scrollIntoView();
+}
+function go(what) {
+  query = ''; $('#searchInput').value = '';
+  if (what === 'home') { filter = 'الكل'; showAll = false; showView('shop'); render(); return; }
+  if (what === 'all') { filter = 'الكل'; showAll = true; showView('shop'); render(); $('#resultsSec').scrollIntoView(); return; }
+  if (what === 'best') { filter = 'best'; showAll = true; showView('shop'); render(); $('#resultsSec').scrollIntoView(); return; }
+  if (what === 'about') { $('#footer').scrollIntoView(); }
+}
+
+/* ========== النوافذ ========== */
+const PANELS = ['bookModal', 'overlay'];
+function closeAll() { PANELS.forEach(id => $('#' + id).hidden = true); document.body.style.overflow = ''; }
+function openEl(id) { closeAll(); $('#overlay').hidden = false; $('#' + id).hidden = false; document.body.style.overflow = 'hidden'; }
+
+function openBook(id) {
+  const b = byId(id); if (!b) return;
+  openBookId = id;
+  $('#mCover').innerHTML = imgTag(b);
+  $('#mCat').textContent = b.cat; $('#mTitle').textContent = b.title;
+  $('#mAuthor').textContent = 'تأليف: ' + b.author;
+  $('#mCat2').textContent = b.cat; $('#mPages').textContent = b.pages;
+  $('#mPriceRow').textContent = fmt(b.price); $('#mPrice').textContent = fmt(b.price);
+  const out = !(b.stock > 0);
+  $('#mDescTitle').hidden = $('#mDesc').hidden = !b.desc;
+  $('#mDesc').textContent = b.desc || '';
+  const st = $('#mStock');
+  st.textContent = out ? 'نفذت الكمية' : b.stock <= 5 ? 'متبقي ' + b.stock + ' نسخ فقط' : 'متوفر';
+  st.className = 'm-stock ' + (out ? 'out' : b.stock <= 5 ? 'low' : '');
+  $('#mAdd').disabled = out; $('#mAdd').textContent = out ? 'نفذت الكمية' : 'أضف إلى السلة';
+  syncModalFav(); openEl('bookModal');
+}
+function syncModalFav() { $('#mFav').classList.toggle('on', favs.includes(openBookId)); }
+
+/* ========== المفضلة والسلة ========== */
+function toggleFav(id) {
+  favs = favs.includes(id) ? favs.filter(f => f !== id) : [...favs, id];
+  save('shop_favs', favs); render();
+  if (!$('#bookModal').hidden) syncModalFav();
+}
+function clampCart(c) {
+  return c.filter(i => byId(i.id) && byId(i.id).stock > 0 && i.qty > 0).map(i => ({ ...i, qty: Math.min(i.qty, byId(i.id).stock) }));
+}
+const cartTotal = () => cart.reduce((s, i) => s + byId(i.id).price * i.qty, 0);
+
+function addToCart(id) {
+  const bk = byId(id);
+  if (!bk || !(bk.stock > 0)) return toast('نفذت الكمية');
+  const it0 = cart.find(i => i.id === id);
+  if (it0 && it0.qty >= bk.stock) return toast('لا يتوفر أكثر من ' + bk.stock + ' نسخة');
+  const it = cart.find(i => i.id === id);
+  if (it) it.qty++; else cart.push({ id, qty: 1 });
+  save('shop_cart', cart); renderBadges();
+  toast('أُضيف «' + byId(id).title + '» إلى السلة');
+}
+function changeQty(id, d) {
+  const it = cart.find(i => i.id === id); if (!it) return;
+  const bk = byId(id);
+  if (d > 0 && bk && it.qty >= bk.stock) return toast('لا يتوفر أكثر من ' + bk.stock + ' نسخة');
+  it.qty += d;
+  if (it.qty <= 0) cart = cart.filter(i => i.id !== id);
+  save('shop_cart', cart); renderCartPage(); renderBadges();
+}
+function removeItem(id) { cart = cart.filter(i => i.id !== id); save('shop_cart', cart); renderCartPage(); renderBadges(); }
+
+function openCart() { step = 1; renderCartPage(); showView('cart'); }
+
+function renderCartPage() {
+  $('#stepper').innerHTML = ['عربة التسوق', 'تفاصيل الدفع', 'اكتمال الطلب'].map((t, i) =>
+    `${i ? '<span class="stp-line"></span>' : ''}<div class="stp ${i + 1 === step ? 'on' : ''} ${i + 1 < step ? 'done' : ''}"><b>${i + 1 < step ? '✓' : i + 1}</b><span>${t}</span></div>`).join('');
+  $('#cs1').hidden = step !== 1; $('#cs2').hidden = step !== 2; $('#cs3').hidden = step !== 3;
+  if (step === 1) {
+    $('#cartRows').innerHTML = cart.length
+      ? `<div class="crow chead"><span>الصورة</span><span>اسم الكتاب</span><span>السعر</span><span>الكمية</span><span>الإجمالي</span><span></span></div>` +
+        cart.map(i => {
+          const b = byId(i.id);
+          return `<div class="crow">
+            <span class="c-img"><img src="${b.img}" alt="غلاف ${esc(b.title)}"></span>
+            <span class="c-title">${esc(b.title)}</span>
+            <span class="c-price">${fmt(b.price)}</span>
+            <span class="c-qty"><span class="qtybox"><button data-dec="${b.id}" aria-label="تقليل">−</button><b>${i.qty}</b><button data-inc="${b.id}" ${i.qty >= b.stock ? 'disabled' : ''} aria-label="زيادة">+</button></span></span>
+            <span class="c-total">الإجمالي: ${fmt(b.price * i.qty)}</span>
+            <button class="c-del" data-rm="${b.id}" aria-label="حذف ${esc(b.title)}">${ic('trash')}</button>
+          </div>`;
+        }).join('')
+      : '<p class="empty">سلتك فارغة. أضف كتاباً لتبدأ.</p>';
+    $('#cartTotal').textContent = fmt(cartTotal());
+    $('#toStep2').disabled = !cart.length; $('#toStep2').style.opacity = cart.length ? 1 : .5;
+  }
+  if (step === 2) {
+    $('#reviewBox').innerHTML = cart.map(i => `<div class="rv-row"><span>${esc(byId(i.id).title)} × ${i.qty}</span><b>${fmt(byId(i.id).price * i.qty)}</b></div>`).join('') +
+      `<div class="rv-total"><span>المجموع</span><span>${fmt(cartTotal())}</span></div>`;
+  }
+  scrollTo({ top: 0 });
+}
+
+function buildWhatsAppText(d, no) {
+  return [`طلب جديد من ${CONFIG.storeName} (${no})`, '',
+    ...cart.map(i => `• ${byId(i.id).title} × ${i.qty} = ${fmt(byId(i.id).price * i.qty)}`), '',
+    `المجموع: ${fmt(cartTotal())}`, '', `الاسم: ${d.name}`, `الهاتف: ${d.phone}`, `العنوان: ${d.address}`,
+    `الدفع: ${d.pay === 'cod' ? 'عند الاستلام' : 'سيُتفق عليه عبر واتساب'}`].join('\n');
+}
+
+$('#orderForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target, el = form.elements, err = $('#formError'), btn = form.querySelector('button[type=submit]');
+  const d = { name: el['name'].value.trim(), phone: el['phone'].value.trim(), address: el['address'].value.trim(), pay: el['pay'].value };
+  const bad = m => { err.textContent = m; err.hidden = false; };
+  if (d.name.length < 3) return bad('اكتب اسمك الكامل.');
+  if (!/^[0-9+\s-]{8,}$/.test(d.phone)) return bad('رقم الهاتف غير صحيح. اكتب أرقاماً فقط، 8 خانات على الأقل.');
+  if (d.address.length < 5) return bad('اكتب عنوان التوصيل بالتفصيل.');
+  if (!cart.length) return bad('السلة فارغة.');
+  err.hidden = true;
+  btn.disabled = true; btn.textContent = 'جارٍ الإرسال…';
+  try {
+    const r = await fetch('/api/orders', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...d, items: cart.map(i => ({ id: i.id, qty: i.qty })) })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'تعذّر إرسال الطلب.');
+    const no = 'رقم ' + data.no, total = fmt(data.total);
+    const wa = $('#waOrder');
+    wa.hidden = d.pay !== 'whatsapp';
+    if (d.pay === 'whatsapp') {
+      wa.href = `${waLink()}?text=${encodeURIComponent(buildWhatsAppText(d, no))}`;
+      $('#doneMsg').textContent = `سجلنا طلبك (${no}). اضغط الزر أدناه لإرسال تفاصيله على واتساب. المجموع: ${total}.`;
+    } else {
+      $('#doneMsg').textContent = `شكراً ${d.name}. سجلنا طلبك (${no}) وسنتصل بك على ${d.phone} لتأكيد التوصيل. ادفع ${total} عند الاستلام.`;
+    }
+    cart = []; save('shop_cart', cart); renderBadges(); form.reset();
+    await refreshBooks();
+    step = 3; renderCartPage();
+  } catch (x) {
+    bad(x.message === 'Failed to fetch' ? 'تعذّر الاتصال بالمتجر. تحقق من الإنترنت وحاول مجدداً.' : x.message);
+    await refreshBooks();
+    if (!cart.length) step = 1;
+    renderCartPage();
+  } finally { btn.disabled = false; btn.textContent = 'تأكيد الطلب'; }
+});
+
+async function refreshBooks() {
+  try { books = await fetch('/api/books').then(r => r.json()); } catch (e) {}
+  cart = clampCart(cart); favs = favs.filter(byId);
+  save('shop_cart', cart); save('shop_favs', favs);
+  render();
+}
+
+/* ========== البانر ========== */
+let slide = 0, slideTimer;
+function showSlide(i) {
+  slide = i;
+  ['#sl1', '#sl2'].forEach((s, n) => $(s).classList.toggle('on', n === i));
+  $('#dots').innerHTML = [0, 1].map(n => `<button class="${n === slide ? 'on' : ''}" data-slide="${n}" aria-label="الشريحة ${n + 1}"></button>`).join('');
+}
+function startSlider() {
+  clearInterval(slideTimer);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  slideTimer = setInterval(() => showSlide((slide + 1) % 2), 6000);
+}
+
+/* ========== أدوات ========== */
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+/* ========== الأحداث ========== */
+document.addEventListener('click', e => {
+  const t = e.target, g = a => t.closest('[' + a + ']');
+  if (g('data-add')) return addToCart(g('data-add').dataset.add);
+  if (g('data-fav')) return toggleFav(g('data-fav').dataset.fav);
+  if (g('data-inc')) return changeQty(g('data-inc').dataset.inc, 1);
+  if (g('data-dec')) return changeQty(g('data-dec').dataset.dec, -1);
+  if (g('data-rm')) return removeItem(g('data-rm').dataset.rm);
+  if (g('data-view')) return openBook(g('data-view').dataset.view);
+  if (g('data-cat')) { e.preventDefault(); return setCat(g('data-cat').dataset.cat); }
+  if (g('data-go')) { e.preventDefault(); return go(g('data-go').dataset.go); }
+  if (g('data-author')) { query = g('data-author').dataset.author; $('#searchInput').value = query; filter = 'الكل'; showAll = true; render(); return; }
+  if (g('data-slide')) { showSlide(+g('data-slide').dataset.slide); return startSlider(); }
+  if (g('data-scroll')) {
+    const tr = $('#' + g('data-scroll').dataset.scroll), dir = +g('data-scroll').dataset.dir;
+    return tr.scrollBy({ left: dir * tr.clientWidth * 0.8, behavior: 'smooth' });
+  }
+  if (t.closest('[data-close]') || t === $('#overlay')) closeAll();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+
+$('#searchInput').addEventListener('input', e => { query = e.target.value; render(); });
+$('#searchForm').addEventListener('submit', e => { e.preventDefault(); showAll = showAll || !!query.trim(); render(); goResults(); });
+$('#cartBtn').addEventListener('click', openCart);
+$('#favBtn').addEventListener('click', () => { filter = filter === 'fav' ? 'الكل' : 'fav'; showAll = filter === 'fav'; query = ''; $('#searchInput').value = ''; showView('shop'); render(); if (filter === 'fav') $('#resultsSec').scrollIntoView(); });
+$('#keepShopping').addEventListener('click', () => showView('shop'));
+$('#backShop').addEventListener('click', () => { go('home'); });
+$('#toStep2').addEventListener('click', () => { if (!cart.length) return toast('السلة فارغة'); step = 2; renderCartPage(); });
+$('#backStep1').addEventListener('click', () => { step = 1; renderCartPage(); });
+$('#mAdd').addEventListener('click', () => { addToCart(openBookId); closeAll(); });
+$('#mFav').addEventListener('click', () => toggleFav(openBookId));
+
+/* ========== التشغيل ========== */
+(async function init() {
+  try {
+    const [c, b] = await Promise.all([fetch('/api/config').then(r => r.json()), fetch('/api/books').then(r => r.json())]);
+    CONFIG = { ...CONFIG, ...c }; books = b;
+  } catch (e) { loadFailed = true; }
+  favs = favs.filter(byId); cart = clampCart(cart);
+  save('shop_favs', favs); save('shop_cart', cart);
+  $('#tickerText').textContent = CONFIG.announcement;
+  $('#logoText').textContent = CONFIG.storeName;
+  $('#aboutText').textContent = CONFIG.about;
+  document.title = CONFIG.storeName + ' | متجر الكتب';
+  ['#waBtn', '#footWa', '#contactLink', '#slWa'].forEach(s => $(s).href = waLink());
+  showSlide(0); startSlider();
+  render(); renderCartPage();
+})();
+</script>
+</body>
+</html>
